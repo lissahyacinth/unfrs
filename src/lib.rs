@@ -122,5 +122,6 @@ fn unf(
 #[pymodule]
 fn unf_rs(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(unf, m)?)?;
+    m.add_class::<UnfHash>()?;
     Ok(())
 }

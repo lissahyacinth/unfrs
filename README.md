@@ -9,12 +9,16 @@ More information on the creation of the UNF can be found [here](https://guides.d
 ```python
 import pandas as pd
 import pyarrow as pa
-from unf_rs import unf
+from unf_rs import unf, UnfHash
+
+def unf_pd(df: pd.DataFrame) -> UnfHash:
+    dtypes = [str(df.dtypes[x]) for x in df.columns]
+    df_batches = pa.Table.from_pandas(x).to_batches()
+    return unf(df_batches, df.columns, dtypes)
 
 x=pd.DataFrame.from_dict({'a': [1,2,3]})
-b=pa.Table.from_pandas(x).to_batches()
-z=unf(b, ['a'], ['int64'])
-print(z.short_hash)
+unf_hash = unf_pd(x)
+print(unf_hash.short_hash)
 > 4azsEFx0zdIIlq6uXGpG4g==
 ```
 
